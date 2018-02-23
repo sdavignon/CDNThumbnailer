@@ -21,7 +21,7 @@ require_once dirname(__FILE__).'/config/config.inc.php';
 $sPath = $_GET['path'];
 //Image url scheme if image is an external one
 $sScheme = isset($_GET['scheme'])?$_GET['scheme']:null;
-echo $sScheme;
+//echo $sScheme;
 //If there are GET parameters in the picture URL, just add it to the path
 $query = array_diff_key($_GET, array_flip(array('path', 'format', 'scheme')));
 
@@ -29,7 +29,7 @@ if( count($query) > 0 ) {
 	$sPath .= '?'.http_build_query($query);
 }
 
-echo $sPath;
+//echo $sPath;
 	//If the scheme is defined we try to download image
 	if( !is_null($sScheme) ) {
 		//Initialize curl handler and make the request
@@ -69,7 +69,7 @@ echo $sPath;
 	//Build valid HTTP Headers for cache and content type/length for a correct navigator management
 	$expires = 60*60*24*EXPIRE_DAYS;
 	header($_SERVER['SERVER_PROTOCOL'].' 200 OK', true, 200);
-//	header("Pragma: public");
+	header("Pragma: public");
 	header("Cache-Control: maxage=".$expires);
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
 	header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($sContent)).' GMT');
