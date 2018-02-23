@@ -81,41 +81,7 @@ if( !is_file($sOriginalFile) ) {
 	}
 }
 
-/*/If resized folder does not exists we add it
-if( !is_dir($sResizedDir) ) {
-	$umask = umask(0);
-	mkdir($sResizedDir, 0777, true);
-	umask($umask);
-}
 
-try
-{
-	require_once dirname(__FILE__).'/src/Image/ImageFactory.php';
-	$oResized = ImageFactory::build($sOriginalFile);
-
-	if( !is_file($sResizedFile) ) {
-		//Resize on width constraint only
-		if( strpos($_GET['format'], 'w') === 0 ) {
-			$oResized->resize(substr($_GET['format'], 1));
-		//Resize on height constraint only
-		} elseif( strpos($_GET['format'], 'h') === 0 ) {
-			$oResized->resize(null, substr($_GET['format'], 1));
-		} elseif( strpos($_GET['format'], 'max') === 0 ) {
-			if( $oResized->getWidth() > $oResized->getHeight() ) {
-				$oResized->resize(substr($_GET['format'], 3));
-			} else {
-				$oResized->resize(null, substr($_GET['format'], 3));
-			}
-		//Resize and crop (11x11)
-		} else {
-			$aFormat = explode('x', $_GET['format']);
-			//Use built Image manipulator to resize and save the new file
-			$oResized->resizeAndCrop($aFormat[0], $aFormat[1]);
-		}
-
-		$oResized->save($sResizedFile);
-	}
-*/
 	//Build valid HTTP Headers for cache and content type/length for a correct navigator management
 	$expires = 60*60*24*EXPIRE_DAYS;
 	header($_SERVER['SERVER_PROTOCOL'].' 200 OK', true, 200);
@@ -128,10 +94,7 @@ try
 	echo file_get_contents($sOriginalFile);
 	//Unset ImageFactory object to make sure resources are released
 	unset($sOriginalFile);
-}
 
-catch( Exception $oError )
-{
-	header($_SERVER['SERVER_PROTOCOL'].' 500 Internal Server Error', true, 500);
-	echo $oError->getMessage();
-}
+
+
+
