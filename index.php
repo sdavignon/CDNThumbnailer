@@ -39,16 +39,7 @@ $sPath = $_GET['svg'];
 		curl_exec($oRequest);
 		$sContent = ob_get_clean();
 
-		//Retrieve last request details
-		$aCurlInfo = curl_getinfo($oRequest);
-		//If last request is a "200 OK", continue
-		if( isset($aCurlInfo['http_code']) && $aCurlInfo['http_code'] == 200 ) {
-			
-		//Else, the file can't be retrieved so, send a 404 header
-		} else {
-			header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found', true, 404);
-			exit();
-		}
+		
 		//Close curl handle
 		curl_close($oRequest);
 	//The scheme is not defined and original file is not here, file does not exists
