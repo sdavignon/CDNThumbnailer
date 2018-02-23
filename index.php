@@ -54,6 +54,7 @@ $sPath = $_GET['svg'];
 	$expires = 60*60*24*EXPIRE_DAYS;
 	header($_SERVER['SERVER_PROTOCOL'].' 200 OK', true, 200);
 	header("Pragma: public");
+	 header("Access-Control-Allow-Origin: *");
 	header("Cache-Control: maxage=".$expires);
 	header('Content-Type: image/svg+xml');
 	header('Content-Length: '.strlen($sContent));
