@@ -20,14 +20,13 @@ require_once dirname(__FILE__).'/config/config.inc.php';
 //File path to be resized
 $sPath = $_GET['svg'];
 //Image url scheme if image is an external one
-	$sPath = 'https://storage.googleapis.com/ck-kitty-image/'.$sPath;
-
+	
 
 //echo $sPath;
 	//If the scheme is defined we try to download image
 	if( !is_null($sScheme) ) {
 		//Initialize curl handler and make the request
-		$oRequest = curl_init($sPath);
+		$oRequest = curl_init('https://storage.googleapis.com/ck-kitty-image/'.$sPath);
 		//Pretend to be a desktop browser
 		curl_setopt($oRequest, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36');
 		//Try and cope with some HTTPS servers
