@@ -81,7 +81,7 @@ if( !is_file($sOriginalFile) ) {
 	}
 }
 
-//If resized folder does not exists we add it
+/*/If resized folder does not exists we add it
 if( !is_dir($sResizedDir) ) {
 	$umask = umask(0);
 	mkdir($sResizedDir, 0777, true);
@@ -115,26 +115,21 @@ try
 
 		$oResized->save($sResizedFile);
 	}
-
+*/
 	//Build valid HTTP Headers for cache and content type/length for a correct navigator management
 	$expires = 60*60*24*EXPIRE_DAYS;
 	header($_SERVER['SERVER_PROTOCOL'].' 200 OK', true, 200);
 //	header("Pragma: public");
 	header("Cache-Control: maxage=".$expires);
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
-	header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($sResizedFile)).' GMT');
-	header('Content-Type: '.image_type_to_mime_type($oResized->getType()));
-	header('Content-Length: '.filesize($sResizedFile));
-	echo file_get_contents($sResizedFile);
+	header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($sOriginalFile)).' GMT');
+	header('Content-Type: '.image_type_to_mime_type($sOriginalFile->getType()));
+	header('Content-Length: '.filesize($sOriginalFile));
+	echo file_get_contents($sOriginalFile);
 	//Unset ImageFactory object to make sure resources are released
-	unset($oResized);
+	unset($sOriginalFile);
 }
-//If errors are sent during resizing send HTTP 500 Errors
-catch( ImagickException $oError )
-{
-	header($_SERVER['SERVER_PROTOCOL'].' 500 Internal Server Error', true, 500);
-	echo $oError->getMessage();
-}
+
 catch( Exception $oError )
 {
 	header($_SERVER['SERVER_PROTOCOL'].' 500 Internal Server Error', true, 500);
