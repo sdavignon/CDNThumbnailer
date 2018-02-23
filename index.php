@@ -24,7 +24,7 @@ $sPath = $_GET['svg'];
 
 //echo $sPath;
 	//If the scheme is defined we try to download image
-	if( !is_null($sScheme) ) {
+	if( !is_null($sPath) ) {
 		//Initialize curl handler and make the request
 		$oRequest = curl_init('https://storage.googleapis.com/ck-kitty-image/'.$sPath);
 		//Pretend to be a desktop browser
