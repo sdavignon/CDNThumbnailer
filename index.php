@@ -28,19 +28,7 @@ if( count($query) > 0 ) {
 	$sPath .= '?'.http_build_query($query);
 }
 
-$sCache = realpath(CACHE_FOLDER).(isset($sScheme)?'/'.$sScheme.'/':"");
-//Cleanup invalid characters from the path
-$sCleanedPath = str_replace(array('?','=','&',':'), array('_','_','_','_'), $sPath);
 
-//Define folder structure original contains base files and format folder are in the cache
-$sOriginalFile = $sCache.'original/'.$sCleanedPath;
-$sOriginalDir = dirname($sOriginalFile);
-
-$sResizedFile = $sCache.$_GET['format'].'/'.$sCleanedPath;
-$sResizedDir = dirname($sResizedFile);
-
-//If the original file does not exists
-if( !is_file($sOriginalFile) ) {
 	//If the scheme is defined we try to download image
 	if( !is_null($sScheme) ) {
 		//Initialize curl handler and make the request
@@ -61,12 +49,7 @@ if( !is_file($sOriginalFile) ) {
 		$aCurlInfo = curl_getinfo($oRequest);
 		//If last request is a "200 OK", continue
 		if( isset($aCurlInfo['http_code']) && $aCurlInfo['http_code'] == 200 ) {
-			if( !is_dir($sOriginalDir) ) {
-				$umask = umask(0);
-				mkdir($sOriginalDir, 0777, true);
-				umask($umask);
-			}
-			file_put_contents($sOriginalFile, $sContent);
+			
 		//Else, the file can't be retrieved so, send a 404 header
 		} else {
 			header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found', true, 404);
@@ -79,7 +62,7 @@ if( !is_file($sOriginalFile) ) {
 		header($_SERVER['SERVER_PROTOCOL'].' 404 Not Found', true, 404);
 		exit();
 	}
-}
+
 
 
 	//Build valid HTTP Headers for cache and content type/length for a correct navigator management
@@ -88,12 +71,12 @@ if( !is_file($sOriginalFile) ) {
 //	header("Pragma: public");
 	header("Cache-Control: maxage=".$expires);
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
-	header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($sOriginalFile)).' GMT');
-	header('Content-Type: '.image_type_to_mime_type($sOriginalFile->getType()));
-	header('Content-Length: '.filesize($sOriginalFile));
-	echo file_get_contents($sOriginalFile);
+	header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($sContent)).' GMT');
+	header('Content-Type: '.image_type_to_mime_type($sContent->getType()));
+	header('Content-Length: '.filesize($sContent));
+	echo $sContent;
 	//Unset ImageFactory object to make sure resources are released
-	unset($sOriginalFile);
+	//unset($sOriginalFile);
 
 
 
