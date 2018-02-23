@@ -72,9 +72,9 @@ if( count($query) > 0 ) {
 	header("Pragma: public");
 	header("Cache-Control: maxage=".$expires);
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
-	header('Last-Modified: '.gmdate('D, d M Y H:i:s', filemtime($sContent)).' GMT');
-	header('Content-Type: '.image_type_to_mime_type($sContent->getType()));
-	header('Content-Length: '.filesize($sContent));
+	header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()-$expires.' GMT');
+	header('Content-Type: image/svg+xml');
+	header('Content-Length: '.strlen($sContent));
 	echo $sContent;
 	//Unset ImageFactory object to make sure resources are released
 	//unset($sOriginalFile);
