@@ -71,7 +71,7 @@ if( count($query) > 0 ) {
 	header($_SERVER['SERVER_PROTOCOL'].' 200 OK', true, 200);
 	header("Pragma: public");
 	header("Cache-Control: maxage=".$expires);
-	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires) . ' GMT');
+	header('Expires: ' . gmdate('D, d M Y H:i:s', time()+$expires. ' GMT');
 	header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()-$expires.' GMT');
 	header('Content-Type: image/svg+xml');
 	header('Content-Length: '.strlen($sContent));
